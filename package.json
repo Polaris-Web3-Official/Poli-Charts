@@ -1,0 +1,30 @@
+{
+  "name": "poli-charts",
+  "version": "1.0.1",
+  "description": "The best graphics for your Hedera Network application.",
+  "main": "./src/index.js",
+  "readme": "./README.md",
+  "type": "module",
+  "scripts": {
+    "test": "test",
+    "dev": "node ./src/index.js"
+  },
+  "keywords": [
+    "Hedera",
+    "Graphics",
+    "Blockchain",
+    "Hedera",
+    "Network",
+    "Graphics",
+    "Polaris",
+    "Polaris",
+    "Web3."
+  ],
+  "author": "Polaris Web3",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "hedera-fetch": "^1.0.8",
+    "d3": "^7.9.0"
+  }
+}
