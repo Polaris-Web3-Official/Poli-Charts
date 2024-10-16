@@ -1,4 +1,4 @@
-import { ctx } from "../toolbar";
+import { ctx } from "../toolbar.js";
 
 export function erasing(offsetX, offsetY) {
   ctx.globalCompositeOperation = "destination-out";

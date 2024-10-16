@@ -1,9 +1,9 @@
 //Const
-import { toolsCanvas } from "./constants/TOOLS";
+import { toolsCanvas } from "./constants/TOOLS.js";
 
-import { startDrawing } from "./functions/startDrawing";
-import { draw } from "./functions/draw";
-import { stopDrawing } from "./functions/stopDrawing";
+import { startDrawing } from "./functions/startDrawing.js";
+import { draw } from "./functions/draw.js";
+import { stopDrawing } from "./functions/stopDrawing.js";
 
 export let $newElement;
 export const $canvas = document.createElement("canvas");

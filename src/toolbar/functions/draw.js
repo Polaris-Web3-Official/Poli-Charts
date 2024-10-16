@@ -1,8 +1,8 @@
-import { states } from "../constants/STATES";
-import { drawing } from "../figures/drawing";
-import { erasing } from "../figures/erasing";
-import { arrow } from "../figures/arrow";
-import { square } from "../figures/aquare";
+import { states } from "../constants/STATES.js";
+import { drawing } from "../figures/drawing.js";
+import { erasing } from "../figures/erasing.js";
+import { arrow } from "../figures/arrow.js";
+import { square } from "../figures/aquare.js";
 
 export function draw(event) {
   const { offsetX, offsetY } = event;

@@ -1,17 +1,17 @@
-import { states } from "./STATES";
-import { MODES } from "./MODES";
-import { setMode } from "../functions/setMode";
+import { states } from "./STATES.js";
+import { MODES } from "./MODES.js";
+import { setMode } from "../functions/setMode.js";
 
-import { downloadCanvas } from "../functions/downloadCanvas";
-import { clearCanvas } from "../functions/clearCanvas";
+import { downloadCanvas } from "../functions/downloadCanvas.js";
+import { clearCanvas } from "../functions/clearCanvas.js";
 
-import { arrowSvg } from "./svgs/arrow";
-import { chartSvg } from "./svgs/chart";
-import { drawSvg } from "./svgs/draw";
-import { eraseSvg } from "./svgs/erase";
-import { squareSvg } from "./svgs/square";
-import { clearSvg } from "./svgs/clear";
-import { downloadSvg } from "./svgs/download";
+import { arrowSvg } from "./svgs/arrow.js";
+import { chartSvg } from "./svgs/chart.js";
+import { drawSvg } from "./svgs/draw.js";
+import { eraseSvg } from "./svgs/erase.js";
+import { squareSvg } from "./svgs/square.js";
+import { clearSvg } from "./svgs/clear.js";
+import { downloadSvg } from "./svgs/download.js";
 
 export const toolsCanvas = [
   {

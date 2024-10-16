@@ -1,4 +1,4 @@
-import { $newElement } from "../toolbar";
+import { $newElement } from "../toolbar.js";
 
 export function downloadCanvas() {
   const $downLoadCanvas = document.createElement("canvas");

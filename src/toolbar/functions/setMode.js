@@ -1,7 +1,7 @@
-import { MODES } from "../constants/MODES";
-import { states } from "../constants/STATES";
+import { MODES } from "../constants/MODES.js";
+import { states } from "../constants/STATES.js";
 
-import { handleCanvasInteractivity } from "./handleCanvasInteractivity";
+import { handleCanvasInteractivity } from "./handleCanvasInteractivity.js";
 
 export function setMode(newMode) {
   Object.keys(states).forEach((key) => {

@@ -1,13 +1,13 @@
 {
   "name": "poli-charts",
-  "version": "1.0.1",
-  "description": "The best graphics for your Hedera Network application.",
-  "main": "./src/index.js",
+  "version": "1.0.6",
+  "description": "The best graphics for your Hedera Network application NFTs.",
+  "main": "./index.js",
   "readme": "./README.md",
   "type": "module",
   "scripts": {
     "test": "test",
-    "dev": "node ./src/index.js"
+    "dev": "vite"
   },
   "keywords": [
     "Hedera",
@@ -18,13 +18,15 @@
     "Graphics",
     "Polaris",
     "Polaris",
-    "Web3."
+    "Web3.",
+    "NFTs"
   ],
   "author": "Polaris Web3",
   "license": "ISC",
   "dependencies": {
-    "canvas": "^2.11.2",
-    "hedera-fetch": "^1.0.8",
-    "d3": "^7.9.0"
+    "apexcharts": "^3.54.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.8"
   }
 }

@@ -1,11 +1,28 @@
+/*Development CSS*/
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  background-color: #4a4a4a;
+}
+
 #container_testing {
-  width: 400px;
+  margin: 3rem;
+  width: 800px;
   height: 400px;
+  border-radius: 10px;
+  overflow: hidden;
   border: 1px solid red;
+}
+
+#container_testing_2 {
+  margin: 3rem;
+  width: 800px;
+  height: 400px;
+  border-radius: 10px;
+  overflow: hidden;
 }

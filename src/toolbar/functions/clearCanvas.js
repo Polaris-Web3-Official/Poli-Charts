@@ -1,6 +1,6 @@
-import { states } from "../constants/STATES";
-import { $canvas } from "../toolbar";
-import { ctx } from "../toolbar";
+import { states } from "../constants/STATES.js";
+import { $canvas } from "../toolbar.js";
+import { ctx } from "../toolbar.js";
 
 export function clearCanvas() {
   ctx.clearRect(0, 0, $canvas.width, $canvas.height);

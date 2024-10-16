@@ -1,7 +1,7 @@
-import { states } from "../constants/STATES";
-import { $canvas } from "../toolbar";
-import { $container3 } from "../toolbar";
-import { newChart } from "../toolbar";
+import { states } from "../constants/STATES.js";
+import { $canvas } from "../toolbar.js";
+import { $container3 } from "../toolbar.js";
+import { newChart } from "../toolbar.js";
 
 export function handleCanvasInteractivity() {
   const isMoving = states.IS_CHART;

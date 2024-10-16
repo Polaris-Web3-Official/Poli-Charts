@@ -1,4 +1,4 @@
-import { states } from "../constants/STATES";
+import { states } from "../constants/STATES.js";
 
 export function stopDrawing() {
   states.IS_DRAWING = false;

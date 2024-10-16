@@ -1,6 +1,6 @@
-import { COLORS } from "../toolbar";
-import { ctx } from "../toolbar";
-import { states } from "../constants/STATES";
+import { COLORS } from "../toolbar.js";
+import { ctx } from "../toolbar.js";
+import { states } from "../constants/STATES.js";
 
 export function square(offsetX, offsetY) {
   ctx.putImageData(states.IMAGE_DATA, 0, 0);

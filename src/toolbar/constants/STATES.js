@@ -1,4 +1,4 @@
-import { MODES } from "./MODES";
+import { MODES } from "./MODES.js";
 
 // Estados
 export const states = {

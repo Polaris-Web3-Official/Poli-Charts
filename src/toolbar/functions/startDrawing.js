@@ -1,7 +1,7 @@
-import { $canvas } from "../toolbar";
-import { toolsCanvas } from "../constants/TOOLS";
-import { states } from "../constants/STATES";
-import { ctx } from "../toolbar";
+import { $canvas } from "../toolbar.js";
+import { toolsCanvas } from "../constants/TOOLS.js";
+import { states } from "../constants/STATES.js";
+import { ctx } from "../toolbar.js";
 
 export function startDrawing(event) {
   const { offsetX, offsetY } = event;
