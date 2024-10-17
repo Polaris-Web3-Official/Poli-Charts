@@ -1,9 +1,9 @@
 export function validateObject(value, paramName) {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     throw new Error(
-      `INFORME POLI-CHARTS: -> Se detecto un Parámetro inválido: ${paramName} debe ser un objeto.`
+      `POLI-CHARTS REPORT: -> Invalid parameter detected: ${paramName} must be an object.`
     );
   } else {
-    console.log(`Objecto ${paramName} válido.`);
+    console.log(`Valid ${paramName} object.`);
   }
 }

@@ -1,9 +1,9 @@
 import ApexCharts from "apexcharts";
 
-import { validateHexColor } from "../../utils/validateHexColor.js";
-import { validateObject } from "../../utils/validateObject.js";
-import { validateString } from "../../utils/validateString.js";
-import { validateNumber } from "../../utils/validateNumber.js";
+import { validateHexColor } from "../../../utils/validateHexColor.js";
+import { validateObject } from "../../../utils/validateObject.js";
+import { validateString } from "../../../utils/validateString.js";
+import { validateNumber } from "../../../utils/validateNumber.js";
 
 const $ = (select) => document.querySelector(select); // -> selecciona un elemento
 const $$ = (select) => document.querySelectorAll(select); // -> selecciona varios elementos

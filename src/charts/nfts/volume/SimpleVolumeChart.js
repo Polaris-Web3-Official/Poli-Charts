@@ -141,7 +141,7 @@ export async function SimpleVolumeChartFunction(options) {
   if (!error) {
     const chartOptions = {
       chart: {
-        type: "area",
+        type: "bar",
         height: "100%",
         width: "100%",
         background: backgroundColor,

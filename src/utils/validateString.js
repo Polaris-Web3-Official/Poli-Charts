@@ -1,9 +1,9 @@
 export function validateString(value, paramName) {
   if (typeof value !== "string" || value.trim() === "") {
     throw new Error(
-      `INFORME POLI-CHARTS: -> Se detecto un Parámetro inválido: ${paramName} debe ser una cadena no vacía.`
+      `POLI-CHARTS REPORT: -> Invalid parameter detected: ${paramName} must be a non-empty string.`
     );
   } else {
-    console.log(`Cadena ${paramName} válida.`);
+    console.log(`Valid string ${paramName}.`);
   }
 }

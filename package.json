@@ -1,6 +1,6 @@
 {
   "name": "poli-charts",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "The best graphics for your Hedera Network application NFTs.",
   "main": "./index.js",
   "readme": "./README.md",

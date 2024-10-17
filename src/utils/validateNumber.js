@@ -1,9 +1,9 @@
 export function validateNumber(value, paramName) {
   if (typeof value !== "number" || isNaN(value)) {
     throw new Error(
-      `INFORME POLI-CHARTS: -> Se detecto un Parámetro inválido: ${paramName} debe ser un número.`
+      `POLI-CHARTS REPORT: -> Invalid parameter detected: ${paramName} must be a number.`
     );
   } else {
-    console.log(`Número ${paramName} válido.`);
+    console.log(`Valid ${paramName} number.`);
   }
 }

@@ -2,22 +2,20 @@ import ApexCharts from "apexcharts";
 import { validateHexColor } from "../../../utils/validateHexColor.js";
 import { validateObject } from "../../../utils/validateObject.js";
 import { validateString } from "../../../utils/validateString.js";
-import { toolbar } from "../../../toolbar/toolbar.js";
+import { parceDateFetchData } from "../../../utils/parceDateFethcData.js";
+import { truncateNumber } from "../../../utils/truncateNumber.js";
 
+// Crear selectores
 const $ = (select) => document.querySelector(select); // -> selecciona un elemento
+
 //------------------------------------------------------------------------------------------------------------------------
-export async function ComplexFloorPriceChartFunction(options) {
+export async function SimpleFloorPriceChartCoinFunction(options) {
   const {
     elementId = "container_testing",
     backgroundColor = "#242424",
     chartColor = "#FF5733",
     fetchData = {
-      apiKey: "35996d57-04b1-4091-9e6f-68337a0c2c1f",
-      tokenId: "0.0.2179656",
-    },
-    fontConfig = {
-      size: "12px",
-      color: "#fff",
+      tokenId: "0.0.1350444",
     },
   } = options;
 
@@ -29,22 +27,19 @@ export async function ComplexFloorPriceChartFunction(options) {
   validateHexColor(options.backgroundColor, "options.backgroundColor");
   validateHexColor(options.chartColor, "options.chartColor");
   validateObject(options.fetchData, "options.fetchData");
-  validateString(options.fetchData.apiKey, "options.fetchData.apiKey");
   validateString(options.fetchData.tokenId, "options.fetchData.tokenId");
-  validateObject(options.fontConfig, "options.fontConfig");
-  validateString(options.fontConfig.size, "options.fontConfig.size");
-  validateString(options.fontConfig.color, "options.fontConfig.color");
 
   let floorData = [];
   let loading = false;
   let error = false;
 
   const $element = $(`#${elementId}`);
-  $element.style.display = "flex";
-  $element.style.position = "relative";
   if (!$element) {
     throw new Error(`No se encontró el elemento con ID: ${elementId}`);
   }
+
+  $element.style.display = "flex";
+  $element.style.position = "relative";
 
   const $loading = document.createElement("div");
   $loading.style.position = "absolute";
@@ -93,34 +88,24 @@ export async function ComplexFloorPriceChartFunction(options) {
   `;
 
   // Función para obtener los datos
-  async function fetchAPIData(tokenId) {
+  async function fetchAPIData(tokenId, from, to, interval) {
     loading = true;
     $element.appendChild($loading);
     try {
-      const url = `https://gbackend.sentx.io/stats/getchart`;
-      const data = {
-        action: "volume",
-        address: tokenId,
-        range: 720,
-        source: 0,
-      };
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-      console.log(result);
-      if (!result.apexChart.collection.floor.series[0].data.length === 0) {
-        throw new Error("Error al obtener los datos de la API");
+      const url = `https://api.saucerswap.finance/tokens/prices/${tokenId}?from=${from}&to=${to}&interval=${interval}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          "Error al obtener los datos de la API: -->  " + response
+        );
       }
 
-      floorData = result.apexChart.collection.floor.series[0].data;
+      const result = await response.json();
+      floorData = result.map((item) => {
+        return [item.timestampSeconds * 1000, truncateNumber(item.closeUsd)];
+      });
       console.log(floorData);
+
       loading = false;
       error = false;
       $element.removeChild($loading);
@@ -141,9 +126,13 @@ export async function ComplexFloorPriceChartFunction(options) {
     }
   }
 
+  const dateData = [
+    Math.floor((Date.now() - 30 * 24 * 60 * 60 * 1000) / 1000), // From: Hace 30 días
+    Math.floor(Date.now() / 1000), // To: Fecha actual
+  ];
+
   // Obtener los datos iniciales
-  await fetchAPIData(fetchData.tokenId);
-  console.log(floorData);
+  await fetchAPIData(fetchData.tokenId, dateData[0], dateData[1], "DAY");
 
   if (!error) {
     const chartOptions = {
@@ -152,6 +141,9 @@ export async function ComplexFloorPriceChartFunction(options) {
         height: "100%",
         width: "100%",
         background: backgroundColor,
+        toolbar: {
+          show: false, // Desactiva las herramientas
+        },
       },
       colors: [chartColor],
       theme: {
@@ -159,7 +151,7 @@ export async function ComplexFloorPriceChartFunction(options) {
       },
       series: [
         {
-          name: "Floor Price (hbar)",
+          name: "Floor Price (usd)",
           data: floorData,
         },
       ],
@@ -171,23 +163,26 @@ export async function ComplexFloorPriceChartFunction(options) {
         labels: {
           show: true,
           format: "dd MMM",
-          style: {
-            colors: fontConfig.color,
-            fontSize: fontConfig.size,
-          },
+        },
+        axisBorder: {
+          show: false, // Oculta el borde del eje X
+        },
+        axisTicks: {
+          show: false, // Oculta las marcas del eje X
         },
       },
       yaxis: {
-        title: {
-          text: "Floor Price (hbar)",
-        },
+        show: false, // Oculta el eje Y para maximizar espacio
       },
       grid: {
-        borderColor: "#90A4AE",
-        strokeDashArray: 1,
+        show: false, // Elimina la cuadrícula
       },
       tooltip: {
         theme: "dark",
+      },
+      stroke: {
+        width: 2,
+        curve: "smooth",
       },
       fill: {
         type: "gradient",
@@ -212,35 +207,12 @@ export async function ComplexFloorPriceChartFunction(options) {
       },
     };
 
-    const $container1 = document.createElement("div");
-    $container1.id = `poli-chart_candlestick-${fetchData.tokenId}_toolboox`;
-    $container1.style.position = "absolute";
-    $container1.style.top = "0";
-    $container1.style.left = "0";
-    $container1.zIndex = "100";
-    $container1.style.width = "40px";
-    $container1.style.height = "100%";
-    $container1.style.display = "flex";
-    $container1.style.flexDirection = "column";
-    $container1.style.gap = "8px";
-    $container1.style.alignItems = "center";
-    $container1.style.overflow = "hidden";
-    $container1.style.paddingTop = "5px";
-    $container1.style.paddingBottom = "5px";
-    $container1.style.backgroundColor = "rgba(0,0,0,1)";
-    $container1.style.overflowX = "hidden";
-    $container1.style.overflowY = "auto";
-    $container1.style.borderTopLeftRadius = "5px";
-    $container1.style.borderBottomLeftRadius = "5px";
-    $element.appendChild($container1);
-
-    const $container2 = document.createElement("div");
-    $container2.id = `poli-chart_candlestick-${fetchData.tokenId}_chart`;
-    $container2.style.position = "relative";
-    $container2.style.width = "calc(100% - 35px)";
-    $container2.style.marginLeft = "35px";
-    $container2.style.height = "100%";
-    $element.appendChild($container2);
+    const $container = document.createElement("div");
+    $container.id = `poli-chart_${fetchData.tokenId}_chart`;
+    $container.style.position = "relative";
+    $container.style.width = "100%";
+    $container.style.height = "100%";
+    $element.appendChild($container);
 
     const $watermark = document.createElement("div");
     $watermark.id = `poli-chart_area-${fetchData.tokenId}_watermark`;
@@ -261,9 +233,7 @@ export async function ComplexFloorPriceChartFunction(options) {
     $element.appendChild($watermark);
 
     // Renderizar el gráfico con ApexCharts
-    const chart = new ApexCharts($container2, chartOptions);
+    const chart = new ApexCharts($container, chartOptions);
     chart.render();
-
-    await toolbar($element, $container1, chart);
   }
 }

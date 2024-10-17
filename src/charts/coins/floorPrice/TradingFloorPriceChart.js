@@ -3,16 +3,16 @@ import { validateHexColor } from "../../../utils/validateHexColor.js";
 import { validateObject } from "../../../utils/validateObject.js";
 import { validateString } from "../../../utils/validateString.js";
 import { toolbar } from "../../../toolbar/toolbar.js";
+import { truncateNumber } from "../../../utils/truncateNumber.js";
 
 const $ = (select) => document.querySelector(select); // -> selecciona un elemento
 //------------------------------------------------------------------------------------------------------------------------
-export async function ComplexFloorPriceChartFunction(options) {
+export async function TradingFloorPriceChartCoinFunction(options) {
   const {
     elementId = "container_testing",
     backgroundColor = "#242424",
     chartColor = "#FF5733",
     fetchData = {
-      apiKey: "35996d57-04b1-4091-9e6f-68337a0c2c1f",
       tokenId: "0.0.2179656",
     },
     fontConfig = {
@@ -29,7 +29,6 @@ export async function ComplexFloorPriceChartFunction(options) {
   validateHexColor(options.backgroundColor, "options.backgroundColor");
   validateHexColor(options.chartColor, "options.chartColor");
   validateObject(options.fetchData, "options.fetchData");
-  validateString(options.fetchData.apiKey, "options.fetchData.apiKey");
   validateString(options.fetchData.tokenId, "options.fetchData.tokenId");
   validateObject(options.fontConfig, "options.fontConfig");
   validateString(options.fontConfig.size, "options.fontConfig.size");
@@ -93,34 +92,26 @@ export async function ComplexFloorPriceChartFunction(options) {
   `;
 
   // Función para obtener los datos
-  async function fetchAPIData(tokenId) {
+  async function fetchAPIData(tokenId, from, to, interval) {
     loading = true;
     $element.appendChild($loading);
     try {
-      const url = `https://gbackend.sentx.io/stats/getchart`;
-      const data = {
-        action: "volume",
-        address: tokenId,
-        range: 720,
-        source: 0,
-      };
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-      console.log(result);
-      if (!result.apexChart.collection.floor.series[0].data.length === 0) {
-        throw new Error("Error al obtener los datos de la API");
+      const url = `https://api.saucerswap.finance/tokens/prices/${tokenId}?from=${from}&to=${to}&interval=${interval}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Error al obtener los datos");
       }
+      const result = await response.json();
 
-      floorData = result.apexChart.collection.floor.series[0].data;
-      console.log(floorData);
+      floorData = result.map((item) => {
+        return [
+          item.timestampSeconds * 1000,
+          truncateNumber(item.openUsd),
+          truncateNumber(item.highUsd),
+          truncateNumber(item.lowUsd),
+          truncateNumber(item.closeUsd),
+        ];
+      });
       loading = false;
       error = false;
       $element.removeChild($loading);
@@ -141,14 +132,18 @@ export async function ComplexFloorPriceChartFunction(options) {
     }
   }
 
+  const dateData = [
+    Math.floor((Date.now() - 30 * 24 * 60 * 60 * 1000) / 1000), // From: Hace 30 días
+    Math.floor(Date.now() / 1000), // To: Fecha actual
+  ];
+
   // Obtener los datos iniciales
-  await fetchAPIData(fetchData.tokenId);
-  console.log(floorData);
+  await fetchAPIData(fetchData.tokenId, dateData[0], dateData[1], "DAY");
 
   if (!error) {
     const chartOptions = {
       chart: {
-        type: "area",
+        type: "candlestick",
         height: "100%",
         width: "100%",
         background: backgroundColor,
@@ -159,10 +154,17 @@ export async function ComplexFloorPriceChartFunction(options) {
       },
       series: [
         {
-          name: "Floor Price (hbar)",
+          name: "Floor Price (usd)",
           data: floorData,
         },
       ],
+      plotOptions: {
+        candlestick: {
+          wick: {
+            useFillColor: true,
+          },
+        },
+      },
       dataLabels: {
         enabled: false, // Desactiva las etiquetas de los puntos de datos
       },
@@ -179,7 +181,7 @@ export async function ComplexFloorPriceChartFunction(options) {
       },
       yaxis: {
         title: {
-          text: "Floor Price (hbar)",
+          text: "Floor Price (usd)",
         },
       },
       grid: {
@@ -188,27 +190,6 @@ export async function ComplexFloorPriceChartFunction(options) {
       },
       tooltip: {
         theme: "dark",
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shadeIntensity: 1,
-          opacityFrom: 0.5,
-          opacityTo: 0.9,
-          stops: [0, 100],
-          colorStops: [
-            {
-              offset: 0,
-              color: chartColor, // Color inicial del área de fondo
-              opacity: 0.5,
-            },
-            {
-              offset: 100,
-              color: `${chartColor}00`, // Color final del área de fondo
-              opacity: 0.9,
-            },
-          ],
-        },
       },
     };
 

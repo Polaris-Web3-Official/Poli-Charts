@@ -7,9 +7,9 @@ export function validateRGBAColor(color) {
     /^rgba?\(\d{1,3},\s?\d{1,3},\s?\d{1,3},\s?(0|1|0?\.\d+)?\)$/;
   if (!rgbaRegex.test(color)) {
     throw new Error(
-      `INFORME POLI-CHARTS: -> Se detecto un Color inválido: ${color}. Asegúrate de que esté en formato RGBA.`
+      `POLI-CHARTS REPORT: -> Invalid color detected: ${color}. Make sure it is in RGBA format.`
     );
   } else {
-    console.log(`Color RGBA válido.`);
+    console.log(`Valid RGBA color.`);
   }
 }

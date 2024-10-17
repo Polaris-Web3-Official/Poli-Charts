@@ -4,8 +4,8 @@ export function downloadCanvas() {
   const $downLoadCanvas = document.createElement("canvas");
   const ctxDownLoadCanvas = $downLoadCanvas.getContext("2d");
 
-  import("https://cdn.jsdelivr.net/npm/html2canvas-pro@1.5.8/+esm").then(
-    ({ default: html2canvas }) => {
+  import("https://cdn.jsdelivr.net/npm/html2canvas-pro@1.5.8/+esm")
+    .then(({ default: html2canvas }) => {
       html2canvas($newElement).then((canvas) => {
         ctxDownLoadCanvas.drawImage(canvas, 0, 0);
         const imgUrl = canvas.toDataURL("image/png");
@@ -14,6 +14,10 @@ export function downloadCanvas() {
         link.href = imgUrl;
         link.click();
       });
-    }
-  );
+    })
+    .catch((e) => {
+      console.error(
+        `POLI-CHARTS REPORT: -> Error in function downloadCanvas. | Error: ${e}`
+      );
+    });
 }
