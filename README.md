@@ -13,3 +13,5 @@
 - ⏳ **Quick Integration**: Get started with less than 10 lines of code.
 
 ![Polaris](https://cusoft.tech/wp-content/uploads/2024/05/P001.svg)
+
+[Reed Documentation](https://docs.polarisweb3.org)
